@@ -84,4 +84,47 @@ TOTAL ENCODER PARAMETERS IN ALL 12x LAYERS = ~78M
 ### Multi-headed attention
 The above covers single-head attention. Multi-head attention simply generates multiple "enhanced" embeddings for each input embedding, and then aggregates them. To cut down on parameter bloat, the **query**, **key**, and **value** projection matrices reduce inputs down to length 64 (instead of 768) and *then* they're aggregated. This gets us to an output analagous to the single head attention output embedding (still length 768).
 
-# Part 3 - Pre-Training Tasks 
+**Parameter counts:**
+Two primary versions exist of BERT:
+* BERT base – 12 layers (transformer blocks), 12 attention heads, and **110M params**.
+* BERT Large – 24 layers, 16 attention heads and, **340M params**.
+
+# Part 3 - Pre-Training Tasks
+BERT was trained on two data sets:
+* BookCorpus (from University of Toronto) - 800M words
+* Wikipedia - 2,500M words
+
+Tasks as mentioned above are MLM and NSP.
+### Masked Language Model (MLM)
+* 12% of tokens randomly withheld from input sentences using a `[MASK]` token
+* Replace 1.5% of tokens with a random token
+* Mark another 1.5% of token for predicton, but don't change them
+* Leave 85% of the tokens untouched
+BERT's authors landed on these numbers empirically.
+
+
+### Next Sentence Prediction (NSP)
+A "sentence" in the BERT paradigm is just a randomly sampled set of tokens of length ≤512. It has nothing to do with actual sentences.
+
+For a "positive" label, stick a `[SEP]` somewhere in the middle of a long span. For negative labels, separate two unrelated spans with a `[SEP]` token.
+
+### Concurrent training
+To train BERT, these tasks are simultaneously trained. One output goes to NSP prediction and another goes to a variable number of MLM predictions. Loss is backpropagated simultaneously.
+
+### Training Task Improvements
+Goals to improve are generally trying to:
+* Reduce size of the model
+* Improve support for non-English languages
+* Reduce the training cost
+* Outperform BERT in NLP benchmarks
+
+**ALBERT**
+Instead of masking subwords, ALBERT would mask whole words (which might be multiple tokens) and sometimes multiple words. This is "N-gram masking". Outperforms BERT, but only at the `xxlarge` size.
+
+ALBERT's authors also got rid of NSP and used Sentence Order Prediction (SOP), which predicts whether two sentences are in order or are swapped (requires deeper understanding).
+
+**RoBERTa** and **XLNet**
+Remove NSP altogether.
+
+**ELECTRA**
+New from Google, used a generator network to replace words with plausible substitutions. Then ask BERT to predict whether a word was swapped out or not. Generally expected to perform better than BERT.
