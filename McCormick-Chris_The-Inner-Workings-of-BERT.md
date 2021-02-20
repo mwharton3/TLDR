@@ -57,11 +57,11 @@ Notes:
 # Part 2 - BERT Architecture
 Note: this all happens after positional encodings are added to input embeddings.
 
+### Single-headed attention
 **Self-attention:** to produce an "enhanced embedding" of an input (word-level) embedding, we do the following:
 * Compute dot product between every input embedding and the others (quadratic dependence operation)
 * Apply softmax to compute weights across all dot product results (sums to 1)
 * Compute weighted average between all of these dot products to get an enhanced embedding
-*This is for "enhancing" one word embedding. Need to do this for all input words.*
 
 One important missing deatil: each embedding, before being used in the above sequence, is projected into a new vector space using a projection matrix (which is composed of tunable weights). There are three projection matrices:
 * Query - projection applied to input word
@@ -79,4 +79,9 @@ All 3 of these matrices are 768x768, because they are transforming each (length 
 * 3 * 768 * 768 = 1,769,472 weights for self-attention
 * 2 * 768 * 3072 = 4,718,592 weights for feed-forward neural network
 TOTAL PARAMETERS PER LAYER: ~6.5M
-TOTAL PARAMETERS IN MODEL: 12 * ~6.5M = ~78M parameters for BERT
+TOTAL ENCODER PARAMETERS IN ALL 12x LAYERS = ~78M
+
+### Multi-headed attention
+The above covers single-head attention. Multi-head attention simply generates multiple "enhanced" embeddings for each input embedding, and then aggregates them. To cut down on parameter bloat, the **query**, **key**, and **value** projection matrices reduce inputs down to length 64 (instead of 768) and *then* they're aggregated. This gets us to an output analagous to the single head attention output embedding (still length 768).
+
+# Part 3 - Pre-Training Tasks 
