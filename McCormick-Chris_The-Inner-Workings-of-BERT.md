@@ -1,4 +1,4 @@
-"The Inner Workings of BERT" is a short eBook by Chris McCormick that provides a concise overview of the BERT model architecture. BERT is a general purpose sequence-to-sequence model used in many Natural Language Processing tasks.
+"The Inner Workings of BERT" is a short eBook by Chris McCormick that provides a concise overview of the BERT model architecture. BERT is a general purpose language encoding model used in many Natural Language Processing tasks.
 
 ## Introduction
 * BERT is good at some things, not so great at others. Part 1 covers what these things are.
@@ -55,3 +55,28 @@ Notes:
 * Be sample-efficient. Language Modeling (i.e. next word prediction) gets a training sample for every word, but the MLM task reduces sample efficiency because there are only so many permutations of masking an input sequence.
 
 # Part 2 - BERT Architecture
+Note: this all happens after positional encodings are added to input embeddings.
+
+**Self-attention:** to produce an "enhanced embedding" of an input (word-level) embedding, we do the following:
+* Compute dot product between every input embedding and the others (quadratic dependence operation)
+* Apply softmax to compute weights across all dot product results (sums to 1)
+* Compute weighted average between all of these dot products to get an enhanced embedding
+*This is for "enhancing" one word embedding. Need to do this for all input words.*
+
+One important missing deatil: each embedding, before being used in the above sequence, is projected into a new vector space using a projection matrix (which is composed of tunable weights). There are three projection matrices:
+* Query - projection applied to input word
+* Key - projection applied to context words
+* Value - projection applied to outputs before computing weighted average
+
+All 3 of these matrices are 768x768, because they are transforming each (length 768) input embedding to a new space.
+
+**Feed-forward network:** after computing enhanced embeddings, each weighted average is sent through a simple feed-forward neural network to create another (length 768) vector, at which point we've now encoded our input sequence. Sizes are:
+* input - 768 neurons
+* hidden - 4x 768 = 3072 neurons
+* output - 768 neurons.
+
+**Parameter counts:**
+* 3 * 768 * 768 = 1,769,472 weights for self-attention
+* 2 * 768 * 3072 = 4,718,592 weights for feed-forward neural network
+TOTAL PARAMETERS PER LAYER: ~6.5M
+TOTAL PARAMETERS IN MODEL: 12 * ~6.5M = ~78M parameters for BERT
