@@ -29,6 +29,29 @@ You have to use BERT's tokens/embeddings, you can't plug in your own. This is ok
 
 Example: "kroxldyphivc" -> "k", "ro", "x", "ld", "yp", "hi", "vc"
 
-From a "black box" standpoint, BERT takes in a bunch of word embeddings (simultaneously, not in sequence) and transforms them to "enhanced" embeddings. Output dimensions are the same as the input dimensions (768 features each). The whole BERT model runs this "enhancement" 12x in sequence (i.e. 12 layers).
+From a "black box" standpoint, BERT takes in a bunch of word embeddings (simultaneously, not in sequence) and transforms them to "enhanced" embeddings. Output dimensions are the same as the input dimensions (768 features each). The whole BERT model runs this "enhancement" 12x in sequence (i.e. 12 layers). Max 512 input features.
 
+Each layer of BERT is a bunch of self-attention encoders. Each one takes a single input token, attends to all other tokens, and produces an enhanced embedding. This is an O(N^2) operation (quadratic dependence) on the input sequence length.
 
+**Positional encoding:** Because BERT processes inputs in parallel, there's no notion of sequence. We fix this by adding positional embeddings to the input sequence. These positional embeddings are constant and unique to each input in the sequence.
+
+**Special tokens:**
+* `[CLS]` - for sentence-level classification tasks
+* `[SEP]` - this and *Segment Embeddings* handle two-sentence tasks
+
+### Applications
+All BERT applications fall into three categories:
+* Token classification - (e.g. named entity recognition (NER), question answering (find span where answer occurs in a passage of text)
+* Text classification - classify a block of text, or perform a regression (e.g. sentiment analysis)
+* Text-pair classification - compare two blocks of text (e.g. similarity)
+
+Notes:
+* The first token for an input sequence is always `[CLS]` (no matter the task). The corresponding output "enhanced embedding" can be used for text classification (ignoring the others).
+* `[SEP]` is used to separate input sentences in the input for simlultaneous processing.
+
+### What BERT can't do
+* Text generation - BERT is only an encoder (not decoder). Each component is only half of a transformer, so we can't generate text with it (e.g. machine translation).
+* Real time sequence - since **BERT** is **B**i-directional, it requires all input at once. Not great for things like auto-complete or speech recognition.
+* Be sample-efficient. Language Modeling (i.e. next word prediction) gets a training sample for every word, but the MLM task reduces sample efficiency because there are only so many permutations of masking an input sequence.
+
+# Part 2 - BERT Architecture
