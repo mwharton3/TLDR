@@ -1,5 +1,7 @@
 "The Inner Workings of BERT" is a short eBook by Chris McCormick that provides a concise overview of the BERT model architecture. BERT is a general purpose language encoding model used in many Natural Language Processing tasks.
 
+*Read time: 6-7min*
+
 ## Introduction
 * BERT is good at some things, not so great at others. Part 1 covers what these things are.
 * Part 2 covers details inside the "black box". This is where the meat of the "Inner Workings" are unveiled.
@@ -124,7 +126,7 @@ Instead of masking subwords, ALBERT would mask whole words (which might be multi
 ALBERT's authors also got rid of NSP and used Sentence Order Prediction (SOP), which predicts whether two sentences are in order or are swapped (requires deeper understanding).
 
 **RoBERTa** and **XLNet**
-Remove NSP altogether.
+Remove NSP altogether, among other minor tweaks.
 
 **ELECTRA**
 New from Google, used a generator network to replace words with plausible substitutions. Then ask BERT to predict whether a word was swapped out or not. Generally expected to perform better than BERT.
