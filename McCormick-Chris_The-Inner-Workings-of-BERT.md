@@ -1,16 +1,11 @@
 "The Inner Workings of BERT" is a short eBook by Chris McCormick that provides a concise overview of the BERT model architecture. BERT is a general purpose sequence-to-sequence model used in many Natural Language Processing tasks.
 
 ## Introduction
-### Part 1 preview
 BERT is good at some things, not so great at others. Part 1 covers what these things are.
 
-### Part 2 preview
 Part 2 covers details inside the "black box". This is where the meat of the "Inner Workings" are unveiled.
 
-### Part 3 preview
-There have been several subtle BERT improvements (e.g. RoBERTa, XLNet, ALBERT). They're all the same basic architecture, but the tasks have been modified somewhat to pre-train BERT.
-
-Part 3 covers how these pre-training tasks differ somewhat from the original BERT task.
+There have been several subtle BERT improvements (e.g. RoBERTa, XLNet, ALBERT). They're all the same basic architecture, but the tasks have been modified somewhat to pre-train BERT. Part 3 covers how these pre-training tasks differ somewhat from the original BERT task.
 
 ## Pre-requisites
 * Basics of neural networks
@@ -18,7 +13,7 @@ Part 3 covers how these pre-training tasks differ somewhat from the original BER
 * You don't need to know about recurrent architectures (e.g. RNN, LSTM), as BERT is not one. "Attention is All You Need" was the title of the original BERT paper, this is what they refer to.
 
 ## Transfer Learning
-* Pre-training and fine-tuning together make transfer learning
+Pre-training and fine-tuning together make transfer learning
 
 ### Pre-training
 BERT's main contributions are the Masked Language Model (MLM) and Next Sentence Prediction (NSP) tasks.
