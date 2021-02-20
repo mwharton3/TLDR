@@ -43,7 +43,7 @@ Each layer of BERT is a bunch of self-attention encoders. Each one takes a singl
 
 ### Applications
 All BERT applications fall into three categories:
-* Token classification - (e.g. named entity recognition (NER), question answering (find span where answer occurs in a passage of text)
+* Token classification - (e.g. named entity recognition (NER), question answering (find span where answer occurs in a passage of text))
 * Text classification - classify a block of text, or perform a regression (e.g. sentiment analysis)
 * Text-pair classification - compare two blocks of text (e.g. similarity)
 
